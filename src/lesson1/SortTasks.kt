@@ -123,27 +123,27 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 99.5
  * 121.3
  */
-//время: O(N*LogN)
+//время: O(N)
 //память: O(N)
 fun sortTemperatures(inputName: String, outputName: String) {
 
-    fun String.toTemperature(): String {
-        if (this.length == 1)
-            return "0.$this"
-        if (this.length == 2 && this.first() == '-')
-            return "-0.${this.last()}"
-        return "${this.substring(0, this.length - 1)}.${this.last()}"
+    fun Int.toTemperature(): String {
+        val temp = (this - 2730).toString()
+        if (temp.length == 1)
+            return "0.$temp"
+        if (temp.length == 2 && temp.first() == '-')
+            return "-0.${temp.last()}"
+        return "${temp.substring(0, temp.length - 1)}.${temp.last()}"
     }
 
     val lines = File(inputName).readLines()
-    val temperatures = IntArray(lines.size) {
-        lines[it].replace(".", "").toInt()
-    }
-    quickSort(temperatures)
+    val temperatures = countingSort(IntArray(lines.size) {
+        lines[it].replace(".", "").toInt() + 2730
+    }, 7730)
     File(outputName).writeText(
         buildString {
             temperatures.forEach {
-                append(it.toString().toTemperature())
+                append(it.toTemperature())
                 append(System.lineSeparator())
             }
         }
