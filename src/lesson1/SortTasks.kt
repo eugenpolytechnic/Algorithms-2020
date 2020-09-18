@@ -2,6 +2,8 @@
 
 package lesson1
 
+import java.io.File
+
 /**
  * Сортировка времён
  *
@@ -62,8 +64,33 @@ fun sortTimes(inputName: String, outputName: String) {
  *
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
+//время: O(N*LogN)
+//память: O(N)
 fun sortAddresses(inputName: String, outputName: String) {
-    TODO()
+    val addressToResidents = mutableMapOf<String, MutableSet<String>>()
+    File(inputName).forEachLine {
+        val (resident, address) = it.split(" - ")
+        addressToResidents.getOrPut(address) { mutableSetOf() }.add(resident)
+    }
+    val result = buildString {
+        addressToResidents.keys
+            .sortedWith(
+                compareBy(
+                    { it.substringBeforeLast(" ") },
+                    { it.substringAfterLast(" ").toInt() }
+                )
+            )
+            .forEach {
+                append(it)
+                append(" - ")
+                val sortedResidents = addressToResidents[it]!!
+                    .sorted()
+                    .joinToString(separator = ", ")
+                append(sortedResidents)
+                append(System.lineSeparator())
+            }
+    }
+    File(outputName).writeText(result)
 }
 
 /**
@@ -96,8 +123,31 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 99.5
  * 121.3
  */
+//время: O(N*LogN)
+//память: O(N)
 fun sortTemperatures(inputName: String, outputName: String) {
-    TODO()
+
+    fun String.toTemperature(): String {
+        if (this.length == 1)
+            return "0.$this"
+        if (this.length == 2 && this.first() == '-')
+            return "-0.${this.last()}"
+        return "${this.substring(0, this.length - 1)}.${this.last()}"
+    }
+
+    val lines = File(inputName).readLines()
+    val temperatures = IntArray(lines.size) {
+        lines[it].replace(".", "").toInt()
+    }
+    quickSort(temperatures)
+    File(outputName).writeText(
+        buildString {
+            temperatures.forEach {
+                append(it.toString().toTemperature())
+                append(System.lineSeparator())
+            }
+        }
+    )
 }
 
 /**
