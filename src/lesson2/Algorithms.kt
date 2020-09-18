@@ -94,8 +94,30 @@ fun josephTask(menNumber: Int, choiceInterval: Int): Int {
  * Если имеется несколько самых длинных общих подстрок одной длины,
  * вернуть ту из них, которая встречается раньше в строке first.
  */
+//время: O(first.length*second.length)
+//память: O(first.length*second.length)
 fun longestCommonSubstring(first: String, second: String): String {
-    TODO()
+    if (first == "" || second == "")
+        return ""
+    val matrix = Array(first.length) { IntArray(second.length) }
+    var maxLength = 0
+    var maxI = 0
+    for (i in matrix.indices) {
+        for (j in matrix[i].indices) {
+            if (first[i] == second[j]) {
+                if (i != 0 && j != 0) {
+                    matrix[i][j] = matrix[i - 1][j - 1] + 1
+                } else {
+                    matrix[i][j] = 1
+                }
+                if (matrix[i][j] > maxLength) {
+                    maxLength = matrix[i][j]
+                    maxI = i
+                }
+            }
+        }
+    }
+    return first.substring(maxI - maxLength + 1, maxI + 1)
 }
 
 /**
@@ -108,6 +130,23 @@ fun longestCommonSubstring(first: String, second: String): String {
  * Справка: простым считается число, которое делится нацело только на 1 и на себя.
  * Единица простым числом не считается.
  */
+//время: O(n*log(log(n)))
+//память: O(n)
 fun calcPrimesNumber(limit: Int): Int {
-    TODO()
+    if (limit < 2)
+        return 0
+    val sieve = MutableList(limit + 1) { it }
+    sieve[1] = 0
+    var i = 2
+    while (i <= limit) {
+        if (sieve[i] != 0) {
+            var j = 2 * i
+            while (j <= limit) {
+                sieve[j] = 0
+                j += i
+            }
+        }
+        i++
+    }
+    return sieve.toSet().size - 1
 }
