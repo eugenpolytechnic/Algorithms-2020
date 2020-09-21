@@ -11,6 +11,7 @@ class DynamicTestsJava : AbstractDynamicTests() {
         longestCommonSubSequence { first, second -> JavaDynamicTasks.longestCommonSubSequence(first, second) }
     }
 
+    @ExperimentalStdlibApi
     @Test
     @Tag("7")
     fun testLongestIncreasingSubSequenceJava() {
