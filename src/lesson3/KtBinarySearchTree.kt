@@ -102,12 +102,13 @@ class KtBinarySearchTree<T : Comparable<T>> : AbstractMutableSet<T>(), Checkable
      *
      * Средняя
      */
-    //время: O(n)
+    //время: O(высота дерева)
+    // [средний случай: O(logN), худший случай: O(N)]
     override fun remove(element: T): Boolean {
 
-        if (!contains(element))
-            return false
         val current = find(element) ?: return false
+        if (element.compareTo(current.value) != 0)
+            return false
         val parent = getParentOf(current)
 
         fun changeParentChildren(node: Node<T>?) {

@@ -127,8 +127,11 @@ fun sortAddresses(inputName: String, outputName: String) {
 //память: O(N)
 fun sortTemperatures(inputName: String, outputName: String) {
 
+    val minTemp = 2730
+    val maxTemp = 7730
+
     fun Int.toTemperature(): String {
-        val temp = (this - 2730).toString()
+        val temp = (this - minTemp).toString()
         if (temp.length == 1)
             return "0.$temp"
         if (temp.length == 2 && temp.first() == '-')
@@ -138,8 +141,8 @@ fun sortTemperatures(inputName: String, outputName: String) {
 
     val lines = File(inputName).readLines()
     val temperatures = countingSort(IntArray(lines.size) {
-        lines[it].replace(".", "").toInt() + 2730
-    }, 7730)
+        lines[it].replace(".", "").toInt() + minTemp
+    }, maxTemp)
     File(outputName).writeText(
         buildString {
             temperatures.forEach {

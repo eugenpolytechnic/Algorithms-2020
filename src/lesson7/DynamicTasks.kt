@@ -2,6 +2,8 @@
 
 package lesson7
 
+import java.lang.Integer.max
+
 /**
  * Наибольшая общая подпоследовательность.
  * Средняя
@@ -14,8 +16,37 @@ package lesson7
  * Если есть несколько самых длинных общих подпоследовательностей, вернуть любую из них.
  * При сравнении подстрок, регистр символов *имеет* значение.
  */
+//время: O(first.len*second.len)
+//память: O(first.len*second.len)
 fun longestCommonSubSequence(first: String, second: String): String {
-    TODO()
+    if (first == "" || second == "")
+        return ""
+    val matrix = Array(first.length + 1) { IntArray(second.length + 1) }
+    for (i in first.length - 1 downTo 0) {
+        for (j in second.length - 1 downTo 0) {
+            matrix[i][j] =
+                if (first[i] == second[j])
+                    matrix[i + 1][j + 1] + 1
+                else
+                    max(matrix[i + 1][j], matrix[i][j + 1])
+        }
+    }
+    var i = 0
+    var j = 0
+    return buildString {
+        while (matrix[i][j] != 0 && i < first.length && j < second.length) {
+            if (first[i] == second[j]) {
+                append(first[i])
+                i++
+                j++
+            } else {
+                if (matrix[i][j] == matrix[i + 1][j])
+                    i++
+                else
+                    j++
+            }
+        }
+    }
 }
 
 /**
@@ -30,8 +61,34 @@ fun longestCommonSubSequence(first: String, second: String): String {
  * то вернуть ту, в которой числа расположены раньше (приоритет имеют первые числа).
  * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
  */
+//время: O(N^2)
+//память: O(N)
+
+@ExperimentalStdlibApi
 fun longestIncreasingSubSequence(list: List<Int>): List<Int> {
-    TODO()
+    val size = list.size
+    if (size < 1)
+        return list
+    val previous = MutableList(size) { -1 }
+    val d = MutableList(size) { 1 }
+    for (i in list.indices) {
+        for (j in 0 until i) {
+            if (list[j] < list[i] && d[j] + 1 > d[i]) {
+                d[i] = d[j] + 1
+                previous[i] = j
+            }
+        }
+    }
+
+    val len = d.maxOrNull()
+    var pos = d.indexOf(len)
+
+    return buildList {
+        while (pos != -1) {
+            add(0, list[pos])
+            pos = previous[pos]
+        }
+    }
 }
 
 /**

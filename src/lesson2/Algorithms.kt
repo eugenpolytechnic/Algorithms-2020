@@ -95,27 +95,29 @@ fun josephTask(menNumber: Int, choiceInterval: Int): Int {
  * вернуть ту из них, которая встречается раньше в строке first.
  */
 //время: O(first.length*second.length)
-//память: O(first.length*second.length)
+//память: O(second.length)
 fun longestCommonSubstring(first: String, second: String): String {
     if (first == "" || second == "")
         return ""
-    val matrix = Array(first.length) { IntArray(second.length) }
+    val matrix = MutableList(2) { IntArray(second.length) }
     var maxLength = 0
     var maxI = 0
-    for (i in matrix.indices) {
-        for (j in matrix[i].indices) {
+    for (i in first.indices) {
+        for (j in second.indices) {
             if (first[i] == second[j]) {
-                if (i != 0 && j != 0) {
-                    matrix[i][j] = matrix[i - 1][j - 1] + 1
-                } else {
-                    matrix[i][j] = 1
-                }
-                if (matrix[i][j] > maxLength) {
-                    maxLength = matrix[i][j]
+                matrix[1][j] =
+                    if (i != 0 && j != 0)
+                        matrix[0][j - 1] + 1
+                    else
+                        1
+                if (matrix[1][j] > maxLength) {
+                    maxLength = matrix[1][j]
                     maxI = i
                 }
             }
         }
+        matrix[0] = matrix[1]
+        matrix[1] = IntArray(second.length)
     }
     return first.substring(maxI - maxLength + 1, maxI + 1)
 }
