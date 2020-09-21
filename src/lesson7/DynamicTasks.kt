@@ -80,7 +80,7 @@ fun longestIncreasingSubSequence(list: List<Int>): List<Int> {
         }
     }
 
-    val len = d.maxOrNull()
+    val len = d.max()
     var pos = d.indexOf(len)
 
     return buildList {
