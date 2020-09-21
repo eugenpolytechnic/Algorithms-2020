@@ -83,12 +83,12 @@ fun longestIncreasingSubSequence(list: List<Int>): List<Int> {
     val len = d.max()
     var pos = d.indexOf(len)
 
-    return buildList {
-        while (pos != -1) {
-            add(0, list[pos])
-            pos = previous[pos]
-        }
+    val result = mutableListOf<Int>()
+    while (pos != -1) {
+        result.add(0, list[pos])
+        pos = previous[pos]
     }
+    return result
 }
 
 /**
