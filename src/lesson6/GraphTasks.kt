@@ -2,6 +2,8 @@
 
 package lesson6
 
+import java.util.*
+
 /**
  * Эйлеров цикл.
  * Средняя
@@ -90,8 +92,50 @@ fun Graph.minimumSpanningTree(): Graph {
  *
  * Эта задача может быть зачтена за пятый и шестой урок одновременно
  */
+//время: O(N)
+//память: O(N)
 fun Graph.largestIndependentVertexSet(): Set<Graph.Vertex> {
-    TODO()
+
+    val exact = mutableListOf<MutableSet<Graph.Vertex>>()
+    val possible = mutableListOf<MutableSet<Graph.Vertex>>()
+    val previous = mutableMapOf<Graph.Vertex, Graph.Vertex>()
+    val stack = Stack<Graph.Vertex>()
+    val vertices = this.vertices.toMutableSet()
+    var visitedCount = 0
+
+    while (vertices.isNotEmpty()) {
+        exact.add(mutableSetOf(stack.push(vertices.first())))
+        possible.add(mutableSetOf())
+        while (stack.isNotEmpty()) {
+            val currentVertex = stack.pop()
+            vertices.remove(currentVertex)
+            for (neighbor in getNeighbors(currentVertex)) {
+                require(
+                    (neighbor !in exact[visitedCount] && neighbor !in possible[visitedCount])
+                            || previous[currentVertex] == neighbor
+                )
+                previous[neighbor] = currentVertex
+                if (previous[currentVertex] == neighbor)
+                    continue
+                if (currentVertex in exact[visitedCount])
+                    possible[visitedCount].add(neighbor)
+                else
+                    exact[visitedCount].add(neighbor)
+                stack.push(neighbor)
+            }
+        }
+        visitedCount++
+    }
+
+    val result = mutableSetOf<Graph.Vertex>()
+    for (i in 0 until visitedCount)
+        result.addAll(
+            if (exact[i].size >= possible[i].size)
+                exact[i]
+            else
+                possible[i]
+        )
+    return result
 }
 
 /**
@@ -114,8 +158,21 @@ fun Graph.largestIndependentVertexSet(): Set<Graph.Vertex> {
  *
  * Ответ: A, E, J, K, D, C, H, G, B, F, I
  */
+//время: O(N^2)
+//память: O(N)
 fun Graph.longestSimplePath(): Path {
-    TODO()
+    val stack = Stack<Path>()
+    stack.addAll(vertices.map { Path(it) })
+    var longestPath = Path()
+    while (stack.isNotEmpty()) {
+        val path = stack.pop()
+        if (path.length > longestPath.length)
+            longestPath = path
+        getNeighbors(path.vertices.last())
+            .filter { !path.contains(it) }
+            .forEach { stack.push(Path(path, this, it)) }
+    }
+    return longestPath
 }
 
 /**

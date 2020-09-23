@@ -63,8 +63,6 @@ fun longestCommonSubSequence(first: String, second: String): String {
  */
 //время: O(N^2)
 //память: O(N)
-
-@ExperimentalStdlibApi
 fun longestIncreasingSubSequence(list: List<Int>): List<Int> {
     val size = list.size
     if (size < 1)

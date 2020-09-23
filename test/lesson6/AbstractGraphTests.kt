@@ -1,7 +1,9 @@
 package lesson6
 
 import lesson6.impl.GraphBuilder
+import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 abstract class AbstractGraphTests {
@@ -258,6 +260,14 @@ abstract class AbstractGraphTests {
             setOf(cross["A"], cross["B"], cross["C"], cross["D"]),
             cross.largestIndependentVertexSet()
         )
+        val loopGraph = GraphBuilder().apply {
+            val a = addVertex("A")
+            val b = addVertex("B")
+            addConnection(a, a)
+            addConnection(b, b)
+            addConnection(a, b)
+        }.build()
+        assertFailsWith(IllegalArgumentException::class) { loopGraph.largestIndependentVertexSet() }
     }
 
     fun longestSimplePath(longestSimplePath: Graph.() -> Path) {
@@ -351,6 +361,16 @@ abstract class AbstractGraphTests {
         }.build()
         val longestPath3 = graph3.longestSimplePath()
         assertEquals(6, longestPath3.length)
+        val graph4 = GraphBuilder().apply {
+            val a = addVertex("A")
+            val b = addVertex("B")
+            val c = addVertex("C")
+            val d = addVertex("D")
+            addConnection(a, a)
+            addConnection(b, b)
+            addConnection(a, b)
+        }.build()
+        assertEquals(1, graph4.longestSimplePath().length)
     }
 
     fun baldaSearcher(baldaSearcher: (String, Set<String>) -> Set<String>) {

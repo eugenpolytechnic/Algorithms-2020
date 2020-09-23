@@ -38,7 +38,7 @@ abstract class AbstractDynamicTests {
         )
     }
 
-    @ExperimentalStdlibApi
+
     fun longestIncreasingSubSequence(longestIncreasingSubSequence: (List<Int>) -> List<Int>) {
         assertEquals(listOf(-5, -2, -1), lesson7.longestIncreasingSubSequence(listOf(6, 0, -5, -2, -1)))
         assertEquals(listOf(), longestIncreasingSubSequence(listOf()))

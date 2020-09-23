@@ -11,7 +11,6 @@ class DynamicTestsKotlin : AbstractDynamicTests() {
         longestCommonSubSequence { first, second -> longestCommonSubSequence(first, second) }
     }
 
-    @ExperimentalStdlibApi
     @Test
     @Tag("7")
     fun testLongestIncreasingSubSequence() {
