@@ -92,8 +92,8 @@ fun Graph.minimumSpanningTree(): Graph {
  *
  * Эта задача может быть зачтена за пятый и шестой урок одновременно
  */
-//время: O(N)
-//память: O(N)
+//время: O(кол-во вершин + кол-во ребер)
+//память: O(кол-во вершин)
 fun Graph.largestIndependentVertexSet(): Set<Graph.Vertex> {
 
     val exact = mutableListOf<MutableSet<Graph.Vertex>>()
@@ -158,8 +158,8 @@ fun Graph.largestIndependentVertexSet(): Set<Graph.Vertex> {
  *
  * Ответ: A, E, J, K, D, C, H, G, B, F, I
  */
-//время: O(N^2)
-//память: O(N)
+//время: O(кол-во вершин + кол-во ребер)
+//память: O(кол-во вершин)
 fun Graph.longestSimplePath(): Path {
     val stack = Stack<Path>()
     stack.addAll(vertices.map { Path(it) })
