@@ -14,6 +14,6 @@ class HeuristicsTestsKotlin : AbstractHeuristicsTests() {
     @Test
     @Tag("12")
     fun testFindVoyagingPathHeuristics() {
-        findVoyagingPathHeuristics { findVoyagingPathHeuristics(10, 2) }
+        findVoyagingPathHeuristics { findVoyagingPathHeuristics(500, 10) }
     }
 }

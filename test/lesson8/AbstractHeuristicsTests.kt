@@ -49,7 +49,7 @@ abstract class AbstractHeuristicsTests {
             addConnection(b, d, 10)
             addConnection(c, e, 5)
         }.build()
-        val path = graph.findVoyagingPathHeuristics(10, 2)
+        val path = graph.findVoyagingPathHeuristics(500, 10)
         assertEquals(105, path.length)
         val vertices = path.vertices
         assertEquals(vertices.first(), vertices.last(), "Voyaging path $vertices must be loop!")
@@ -59,6 +59,24 @@ abstract class AbstractHeuristicsTests {
         expected.forEach {
             assertTrue(it in vertices, "Voyaging path $vertices must travel through all vertices!")
         }
+        val graph2 = GraphBuilder().apply {
+            val a = addVertex("A")
+            val b = addVertex("B")
+            val c = addVertex("C")
+            val d = addVertex("D")
+            val e = addVertex("E")
+            addConnection(a, b, 90)
+            addConnection(a, c, 80)
+            addConnection(a, d, 40)
+            addConnection(a, e, 100)
+            addConnection(b, d, 45)
+            addConnection(b, e, 60)
+            addConnection(c, d, 16)
+            addConnection(c, e, 35)
+            addConnection(d, e, 28)
+        }.build()
+        val path2 = graph2.findVoyagingPathHeuristics(500, 10)
+        assertEquals(241, path2.length)
     }
 
 }
